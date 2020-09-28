@@ -11,7 +11,7 @@ class deque
 		int  size;
 
 	public:
-		Deque(int size)
+		deque(int size)
 		{
 			front = -1;
 			rear = 0;
@@ -139,6 +139,6 @@ int deque::getRear()
 }
 
 int main(){
-	deque d;
+	deque d(5);
 	//carry out necessary fuctions
 }
