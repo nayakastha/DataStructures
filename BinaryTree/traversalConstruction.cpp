@@ -53,8 +53,34 @@ Node* buildTree_inpost(int in[], int post[], int start, int end){
 	temp->lchild = buildTree_inpost(in, post, start, inIndex-1);
 	return temp;   
 }
-
-Node* buildTree_prepost(int pre[], int post[], int start, int end){
+//Given only pre-order and post-order you can't construct a Unique Binary tree.
+//But, you can construct a unique full binary tree.
+Node* buildTreeUtil(inr pre[], int post[], int* preIndex, int l, int h, int size){
+        if (*preIndex >= size || l > h)  
+         return NULL; 
+        Node* temp = new Node( pre[*preIndex] );  
+        ++(*preIndex); 
+	if(l == h)
+         return temp;
+	int i;  
+        for (i = l; i <= h; ++i)  {
+	  if (pre[*preIndex] == post[i])  
+            break; 
+	}
+	if (i <= h)  
+       {  
+        temp->left = constructTreeUtil (pre, post, preIndex, 
+                                                l, i, size);  
+        temp->right = constructTreeUtil (pre, post, preIndex,  
+                                                 i + 1, h, size);  
+       }  
+  
+    return temp;  
+        
+}
+Node* buildTree_prepost(int pre[], int post[], int size){
+	int preIndex = 0;
+	return buildTreeUtil(pre, post, &preIndex, 0, size-1, size);
 	
 }
 
