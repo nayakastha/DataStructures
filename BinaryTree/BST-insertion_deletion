@@ -1,0 +1,55 @@
+//BST search insertion deletion
+#include<bits/stdc++.h>
+using namespace std;
+
+class Node{
+	public:
+		int data;
+		Node* lchild;
+		Node* rchild;
+};
+
+Node* create(){
+    Node* newNode = new Node();
+    cout<<"Enter the data for the node(Enter * to stop)";
+    char ch;
+    if(ch == '*'){
+        return NULL;
+    }
+    newNode->data = ch;
+    cout<<endl<<"Proceed to Children"<<endl;
+    newNode->lchild = create();
+    newNode->rchild = create();
+    return newNode;
+}
+
+Node* newNode(int key){
+	Node* temp = new Node();
+	temp->data = key;
+	temp->lchild = NULL;
+	temp->rchild = NULL;
+}
+
+Node* Insert(Node* root, int key){
+	if(root == NULL)
+	  return newNode(key);
+	if(key < root->data)
+	  root->lchild = Insert(root->lchild,key);
+	if(key > root->data)
+	   root->rchild = Insert(root->rchild,key);
+	   
+	return root;      
+}
+
+Node* Delete(Node* root, int key){
+	if(root == NULL)
+	  return root;
+	if(key < root->data)
+	  root->lchild = Delete(root->lchild, key);
+    else if(key > root->data) 
+	  root->rchild = Delete(root->rchild, key);
+	else{
+		
+	}  
+	  
+}
