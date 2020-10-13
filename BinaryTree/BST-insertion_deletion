@@ -41,6 +41,15 @@ Node* Insert(Node* root, int key){
 	return root;      
 }
 
+Node* minValueNode( Node* node) 
+{ 
+    Node* current = node; 
+    while (current && current->lchild != NULL) 
+        current = current->lchild; 
+  
+    return current; 
+} 
+
 Node* Delete(Node* root, int key){
 	if(root == NULL)
 	  return root;
@@ -49,7 +58,24 @@ Node* Delete(Node* root, int key){
     else if(key > root->data) 
 	  root->rchild = Delete(root->rchild, key);
 	else{
+		if(root->lchild == NULL){
+		Node* temp = new Node();
+		temp = root->rchild;
+		free(root);
+		return temp;}
 		
-	}  
-	  
+		else if(root->rchild == NULL){
+		Node* temp = new Node();
+		temp = root->lchild;
+		free(root);
+		return temp;
+		}
+         Node* temp = minValueNode(root->rchild); 
+	 root->data = temp->data;
+	 root->rchild = deleteNode(root->rchild, temp->data); 
+	 
+      }  
+	  return root;
 }
+
+//Write a suitable main function for this to work
