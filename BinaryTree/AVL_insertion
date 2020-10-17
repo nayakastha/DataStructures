@@ -1,0 +1,151 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Node
+{
+	public:
+		int data;
+		Node* left;
+		Node* right;
+		int height;
+};
+
+int get_height(Node* node)
+{
+	if(node == NULL)
+		return 0;
+	return node->height;
+}
+
+int max (int a, int b)
+{
+	return (a > b) ? a : b;
+}
+
+Node* newNode(int key)
+{
+	Node* node = new Node();
+	node->data = key;
+	node->left = NULL;
+	node->right = NULL;
+	node->height = 1;
+	return node;
+}
+
+Node* rightRotate(Node* node)
+{
+	Node* temp1 = node->left;
+	Node* temp2 = temp1->right;
+
+	temp1->right = node;
+	node->left = temp2;
+
+	node->height = max(get_height(node->left),get_height(node->right))+1;
+	temp1->height = max(get_height(temp1->left),get_height(temp1->right))+1;
+
+	return temp1;
+}
+
+Node* leftRotate(Node* node)
+{
+	Node* temp1 = node->right;
+	Node* temp2 = temp1->left;
+
+	temp1->left = node;
+	node->right = temp2;
+
+	node->height = max(get_height(node->left),get_height(node->right))+1;
+	temp1->height = max(get_height(temp1->left),get_height(temp1->right))+1;
+
+	return temp1;
+}
+
+int get_balance(Node* node)
+{
+	if(node == NULL)
+		return 0;
+	return get_height(node->left) - get_height(node->right);
+}
+
+
+Node* insert(Node* node, int key)
+{
+	//Normal BST insertion
+	if(node == NULL)
+		return newNode(key);
+
+	if (key < node->data)
+		node->left = insert(node->left,key);
+	else if (key > node->data)
+		node->right = insert(node->right,key);
+	else
+		return node;
+
+	//height of this ancestor node
+	node->height = 1 + max(get_height(node->left),get_height(node->right));
+
+	//balance factor of the ancestor node
+	int balance = get_balance(node);
+
+	//left-left
+	if(balance > 1 && key < node->left->data)
+		return rightRotate(node);
+	//right-right
+	if (balance < -1 && key > node->right->data)
+		return leftRotate(node);
+	//left-right
+	if (balance > 1 && key > node->left->data)
+		return leftRotate(node);
+	//right-left
+	if(balance < -1 && key < node->right->data)
+		return rightRotate(node);
+
+	return node;
+
+}
+
+void preOrder(Node *root)
+{
+	if(root != NULL)
+		{
+			cout << root->data << " ";
+			preOrder(root->left);
+			preOrder(root->right);
+		}
+}
+
+int main()
+{
+	Node *root = NULL;
+
+	/* Constructing tree given in
+	the above figure */
+	root = insert(root, 10);
+	root = insert(root, 20);
+	root = insert(root, 30);
+	root = insert(root, 40);
+	root = insert(root, 50);
+	root = insert(root, 25);
+
+
+	cout << "Preorder traversal of the constructed AVL tree is \n";
+	preOrder(root);
+
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
